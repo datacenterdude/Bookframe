@@ -1,6 +1,6 @@
 # 📘 Bookframe Project Roadmap
 
-_Last updated: 2025-04-05_
+_Last updated: 2025-04-06_
 
 ## ✅ Completed
 
@@ -13,23 +13,30 @@ _Last updated: 2025-04-05_
   - `PUT /works/:id` - Update work
   - `GET /works/:id` - Fetch single work
   - `DELETE /works/:id` - Delete work
+- ✅ Designed D1 schema for `editions` and relationship to `works`
+- ✅ Implemented full REST API for `editions` table:
+  - `POST /editions` - Create edition (with UUID and validation)
+  - `GET /editions/:id` - Fetch single edition
+  - `PUT /editions/:id` - Update edition
+  - `GET /works/:id/editions` - List all editions for a work
 - ✅ Reorganized GitHub repo into monorepo with `bookframe-worker`
 - ✅ Updated to use `wrangler.toml` with proper database bindings
 - ✅ Resolved `BOOKFRAME_DB` runtime binding issue
+- ✅ README and `roadmap.md` documentation added
 
 ## 🚧 In Progress
 
-- 🧠 Design D1 schema for `editions` and their relationship to `works`
-- 🔧 Add full CRUD API support for `editions` table
-- 💬 Ensure API behavior conforms to expected REST semantics (status codes, validation, etc.)
+- 🧪 Evaluate enrichment strategies for metadata (ISBN, ASIN lookup)
+- 🛠️ Standardize error handling and validation logic
+- 🔬 Consider normalization helpers (e.g., WASM for ID parsing)
 
 ## 🧪 Planned Features (v0.2+)
 
 - 📚 Build `authors` table and associated endpoints
-- 🔁 Support linking multiple editions to a single work (`editions -> work_id`)
 - 🔍 Implement advanced search (title, author, edition filters)
 - 📈 Introduce analytics endpoints for usage tracking
 - 🔐 Add user auth layer (optional public/private endpoints)
 - 📦 WASM module exploration for metadata enrichment or conversion
-- 📜 Markdown-based book summaries or AI-generated synopsis integration
 - 🌍 Create a public-facing frontend interface (likely React/Next.js or Astro)
+- 🔄 Enable batch import of books via CSV/JSON
+- 📜 Markdown-based book summaries or AI-generated synopsis integration
