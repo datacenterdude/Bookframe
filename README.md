@@ -1,140 +1,107 @@
-# 📚 BookFrame
+# 📘 Bookframe
 
-**BookFrame** is a lightweight metadata API designed to power ebook and audiobook organization — serving as the foundation for a modern alternative to GoodReads and OpenLibrary, built entirely on serverless infrastructure via Cloudflare Workers and D1.
-
----
-
-## 🚀 Project Goals
-
-BookFrame is focused on:
-
-- 🧠 **Metadata Aggregation**: Combine data from ISBNs (books) and ASINs (audiobooks) into unified "works".
-- 🎧 **Dual Format Support**: Treat ebooks and audiobooks as separate editions under one umbrella.
-- 🛰️ **Cloud-Native Simplicity**: Lightweight Cloudflare Worker + D1 backend for easy global deployment.
-- 🔐 **Privacy & Portability First**: No accounts, no tracking — just fast, flexible, and open.
+Bookframe is an API-first backend system for cataloging books, audiobooks, and their respective editions. It is built with **Cloudflare Workers**, **Cloudflare D1**, and written in **TypeScript**.
 
 ---
 
-## 📦 API Endpoints
+## ✨ Features
 
-### Health Check
-```
-GET /
-```
-> Returns a simple "BookFrame API is live" message.
-
----
-
-### Search for Works
-```
-POST /search
-```
-```json
-{
-  "query": "The Martian"
-}
-```
+- Cloudflare Worker-based REST API
+- D1 database with schema for `works` and `editions`
+- Full CRUD for `works` and `editions`
+- Search endpoint with title/author matching
+- UUID-backed editions for unique identification
+- Clean JSON responses
+- GitHub monorepo for future frontend/backend expansion
 
 ---
 
-### Get a Work by ID
-```
-GET /works/:id
-```
+## 📖 Works vs. Editions
+
+Bookframe uses a two-tier model to represent literary content:
+
+### 🧠 `works`
+A `work` represents a **conceptual book**, regardless of format. Think of it as the creative intellectual property — the story, characters, and content — independent of how it is published.
+
+**Examples of works:**
+- *The Martian* by Andy Weir
+- *1984* by George Orwell
+
+### 🧩 `editions`
+An `edition` represents a **specific published version** of a work. This includes variations such as:
+
+- Print books (hardcover, paperback, special editions)
+- eBooks (Kindle, EPUB, etc.)
+- Audiobooks (narrator, abridged/unabridged, ASINs)
+
+Each edition has a **unique internal UUID**, but externally references a public identifier like:
+
+- `ISBN` (for books and eBooks)
+- `ASIN` (for audiobooks or Kindle editions)
+
+**Key fields:**
+- `id` (internal UUID)
+- `work_id` (foreign key to `works`)
+- `type` (e.g., book or audiobook)
+- `format` (e.g., hardcover, Kindle, Audible)
+- `isbn` or `asin`
+- `narrator` (optional, for audiobooks)
+- `abridged` (boolean, optional)
+
+This separation allows Bookframe to:
+
+- Normalize multiple formats under a single work
+- Track metadata per edition
+- Support advanced filters and future integrations (e.g., fetch by ISBN)
 
 ---
 
-### Create a New Work
-```
-POST /works
-```
-```json
-{
-  "id": "1",
-  "title": "The Martian",
-  "author": "Andy Weir",
-  "description": "Six days ago, astronaut Mark Watney became one of the first people to walk on Mars...",
-  "cover_url": "https://covers.openlibrary.org/b/isbn/9780804139201-L.jpg"
-}
-```
+## 🔌 Endpoints
 
----
-
-### Update a Work
-```
-PUT /works/:id
-```
-
----
-
-### Delete a Work
-```
-DELETE /works/:id
-```
-
----
-
-## 🛠️ Tech Stack
-
-- **Cloudflare Workers** — Serverless edge execution
-- **D1** — SQLite-backed Cloudflare Database
-- **TypeScript** — Typed API logic and clean interfaces
-- **Open Library (future)** — Source for metadata and cover images
-- **GitHub Actions (planned)** — For CI/CD and tests
-
----
-
-## 📁 Folder Structure
-
-```
-Bookframe/
-├── bookframe-worker/
-│   ├── src/               # Cloudflare Worker source code
-│   ├── test/              # Vitest tests (WIP)
-│   ├── wrangler.toml      # Worker config & D1 bindings
-│   └── tsconfig.json      # TypeScript config
-└── README.md
+```http
+GET /                       # Health check
+POST /search               # Full-text search
+POST /works                # Create a new work
+GET /works/:id             # Fetch single work by ID
+PUT /works/:id             # Update a work
+DELETE /works/:id          # Delete a work
+POST /editions             # Create new edition (linked to a work)
+GET /editions/:id          # Fetch an edition by ID
+PUT /editions/:id          # Update edition metadata
 ```
 
 ---
 
-## 🧪 Getting Started Locally
+## 🛠️ Local Development
 
 ```bash
-# Clone the repo
-git clone https://github.com/datacenterdude/Bookframe.git
-cd Bookframe/bookframe-worker
+# Start local dev server
+wrangler dev
 
-# Install dependencies
-npm install
-
-# Run locally with Cloudflare D1
-npx wrangler dev
+# Deploy to Cloudflare
+wrangler deploy
 ```
 
----
-
-## 📌 Roadmap
-
-- [x] CRUD support for works via D1
-- [x] Deployable Cloudflare Worker
-- [ ] Open Library integration for ISBN/ASIN resolution
-- [ ] WASM module for ISBN validation
-- [ ] Web UI frontend (Astro, SvelteKit, or Next.js)
-- [ ] Docker container for offline mode (long-term)
+Make sure your `wrangler.toml` has the correct D1 database bindings.
 
 ---
 
-## 👨‍💻 Author
+## 🧭 Roadmap
 
-**Nick Howell**  
-[@datacenterdude](https://github.com/datacenterdude)  
-Global Field CTO & Builder of Fun Things™
+See [`roadmap.md`](./roadmap.md) for full roadmap planning and milestones.
 
 ---
 
-## 📜 License
+## 📦 Future Plans
 
-MIT — free for personal and commercial use.
+- Author table and relationships
+- WASM-powered metadata scrapers
+- Metadata ingestion via ISBN/ASIN
+- Public frontend using Astro or Next.js
+- AI-generated book summaries
 
 ---
+
+## 🧠 Inspiration
+
+Born out of frustration with existing book metadata APIs and the desire to build a complete, modern, open backend for book and audiobook discovery.
