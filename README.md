@@ -70,6 +70,26 @@ GET /editions/:id          # Fetch an edition by ID
 PUT /editions/:id          # Update edition metadata
 ```
 
+### 🔍 GET /authors/:id/editions
+Returns all editions across all works associated with a specific author.
+
+**Example response:**
+
+```json
+[
+  {
+    "edition_id": "c93550ff-213e-4000-b9c9-67005a0abe7f",
+    "work_title": "The Martian",
+    "type": "print",
+    "format": "hardcover",
+    "isbn": "9780804139201",
+    "asin": null,
+    "narrator": null,
+    "abridged": null
+  },
+  ...
+]
+
 ---
 
 ## 🛠️ Local Development
