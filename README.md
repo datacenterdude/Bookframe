@@ -1,6 +1,6 @@
 # 📚 BookFrame
 
-**BookFrame** is a lightweight metadata API designed to power ebook and audiobook organization — serving as the foundation for a modern alternative to Readarr, built entirely on serverless infrastructure via Cloudflare Workers and D1.
+**BookFrame** is a lightweight metadata API designed to power ebook and audiobook organization — serving as the foundation for a modern alternative to GoodReads and OpenLibrary, built entirely on serverless infrastructure via Cloudflare Workers and D1.
 
 ---
 
