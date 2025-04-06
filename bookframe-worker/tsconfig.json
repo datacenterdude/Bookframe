@@ -8,7 +8,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "lib": ["ES2020", "WebWorker"],
+    "lib": ["ES2020", "DOM"],
     "noEmit": true,
     "isolatedModules": true
   },
