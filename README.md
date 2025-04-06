@@ -6,23 +6,23 @@
 
 ## ⚙️ Tech Stack
 
-- 🧠 **TypeScript** – Fully typed end-to-end
-- ☁️ **Cloudflare Workers** – Global edge deployment
-- 🗃️ **D1 (SQLite)** – Lightweight relational DB on Cloudflare
-- 🔌 **RESTful API** – Structured endpoints with clear conventions
-- 🧪 **Wrangler** – Local development and deployment tooling
+- 🧠 **TypeScript** – Fully typed end-to-end  
+- ☁️ **Cloudflare Workers** – Global edge deployment  
+- 🗃️ **D1 (SQLite)** – Lightweight relational DB on Cloudflare  
+- 🔌 **RESTful API** – Structured endpoints with clear conventions  
+- 🧪 **Wrangler** – Local development and deployment tooling  
 
 ---
 
 ## ✨ Features
 
-- 🔄 Full CRUD for authors, works, and editions
-- 🔗 Normalized relationships between authors, works, and editions
-- 🔍 Search support for title and author queries
-- 🔁 Upsert logic for editions based on ISBN/ASIN
-- 📚 Edition-level granularity for formats and narrators
-- 🔐 UUID-based identifiers with graceful external metadata linking
-- 🌍 Deploys anywhere Cloudflare reaches
+- 🔄 Full CRUD for authors, works, and editions  
+- 🔗 Normalized relationships between authors, works, and editions  
+- 🔍 Search support for title and author queries  
+- 🔁 Upsert logic for editions based on ISBN/ASIN  
+- 📚 Edition-level granularity for formats and narrators  
+- 🔐 UUID-based identifiers with graceful external metadata linking  
+- 🌍 Deploys anywhere Cloudflare reaches  
 
 ---
 
@@ -30,23 +30,23 @@
 
 BookFrame models the literary world with a clean, three-layer system:
 
-### 🧑‍💼 `authors`
+### 🧑‍💼 `authors`  
 An `author` is the canonical creator entity. Works are linked to authors via a many-to-many relationship.
 
-### 📖 `works`
+### 📖 `works`  
 A `work` is the conceptual book — the intellectual property. A single work can have many editions.
 
 **Examples:**
-- *The Martian* by Andy Weir
-- *1984* by George Orwell
+- *The Martian* by Andy Weir  
+- *1984* by George Orwell  
 
-### 🧩 `editions`
+### 🧩 `editions`  
 An `edition` is a specific published format of a work — hardcover, Kindle, Audible, etc.
 
 Each edition:
-- Is tied to a `work`
-- Can have a unique `isbn` (books) or `asin` (audiobooks)
-- May include format-specific fields like `narrator` or `abridged`
+- Is tied to a `work`  
+- Can have a unique `isbn` (books) or `asin` (audiobooks)  
+- May include format-specific fields like `narrator` or `abridged`  
 
 ---
 
@@ -127,12 +127,12 @@ database_id = "xxxx-xxxx-xxxx"
 
 See [`roadmap.md`](./roadmap.md) for detailed milestone tracking.
 
-- ✅ Normalize schema for authors/works/editions
-- ✅ Implement upsert logic for editions
-- ✅ Support full read/write lifecycle for all entities
-- 🔜 Metadata ingestion via Google Books and OpenLibrary
-- 🔜 Public frontend with Astro/Next.js
-- 🔜 AI-powered summaries, tagging, and themes
+- ✅ Normalize schema for authors/works/editions  
+- ✅ Implement upsert logic for editions  
+- ✅ Support full read/write lifecycle for all entities  
+- 🔜 Metadata ingestion via Google Books and OpenLibrary  
+- 🔜 Public frontend with Astro/Next.js  
+- 🔜 AI-powered summaries, tagging, and themes  
 
 ---
 
@@ -140,9 +140,9 @@ See [`roadmap.md`](./roadmap.md) for detailed milestone tracking.
 
 Most book APIs are either closed, inconsistent, or limited. BookFrame was born out of a need for a **modern, reliable, and open system** that can:
 
-- Ingest books from anywhere
-- Normalize data for multi-format discovery
-- Stay updated automatically
-- Scale with the community
+- Ingest books from anywhere  
+- Normalize data for multi-format discovery  
+- Stay updated automatically  
+- Scale with the community  
 
 Built by readers. For readers. Powered by Cloudflare.
