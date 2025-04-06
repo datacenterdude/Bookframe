@@ -1,94 +1,104 @@
-# 📘 Bookframe
+# 📘 BookFrame
 
-Bookframe is an API-first backend system for cataloging books, audiobooks, and their respective editions. It is built with **Cloudflare Workers**, **Cloudflare D1**, and written in **TypeScript**.
+**BookFrame** is a modern, API-first backend for organizing and exploring books, audiobooks, and their many editions. Designed for flexibility, speed, and developer ergonomics, it uses **Cloudflare Workers** and **D1** to deliver a blazing-fast metadata layer — ideal for personal libraries, publishers, or community-powered catalogs.
+
+---
+
+## ⚙️ Tech Stack
+
+- 🧠 **TypeScript** – Fully typed end-to-end
+- ☁️ **Cloudflare Workers** – Global edge deployment
+- 🗃️ **D1 (SQLite)** – Lightweight relational DB on Cloudflare
+- 🔌 **RESTful API** – Structured endpoints with clear conventions
+- 🧪 **Wrangler** – Local development and deployment tooling
 
 ---
 
 ## ✨ Features
 
-- Cloudflare Worker-based REST API
-- D1 database with schema for `works` and `editions`
-- Full CRUD for `works` and `editions`
-- Search endpoint with title/author matching
-- UUID-backed editions for unique identification
-- Clean JSON responses
-- GitHub monorepo for future frontend/backend expansion
+- 🔄 Full CRUD for authors, works, and editions
+- 🔗 Normalized relationships between authors, works, and editions
+- 🔍 Search support for title and author queries
+- 🔁 Upsert logic for editions based on ISBN/ASIN
+- 📚 Edition-level granularity for formats and narrators
+- 🔐 UUID-based identifiers with graceful external metadata linking
+- 🌍 Deploys anywhere Cloudflare reaches
 
 ---
 
-## 📖 Works vs. Editions
+## 🧠 Data Model
 
-Bookframe uses a two-tier model to represent literary content:
+BookFrame models the literary world with a clean, three-layer system:
 
-### 🧠 `works`
-A `work` represents a **conceptual book**, regardless of format. Think of it as the creative intellectual property — the story, characters, and content — independent of how it is published.
+### 🧑‍💼 `authors`
+An `author` is the canonical creator entity. Works are linked to authors via a many-to-many relationship.
 
-**Examples of works:**
+### 📖 `works`
+A `work` is the conceptual book — the intellectual property. A single work can have many editions.
+
+**Examples:**
 - *The Martian* by Andy Weir
 - *1984* by George Orwell
 
 ### 🧩 `editions`
-An `edition` represents a **specific published version** of a work. This includes variations such as:
+An `edition` is a specific published format of a work — hardcover, Kindle, Audible, etc.
 
-- Print books (hardcover, paperback, special editions)
-- eBooks (Kindle, EPUB, etc.)
-- Audiobooks (narrator, abridged/unabridged, ASINs)
-
-Each edition has a **unique internal UUID**, but externally references a public identifier like:
-
-- `ISBN` (for books and eBooks)
-- `ASIN` (for audiobooks or Kindle editions)
-
-**Key fields:**
-- `id` (internal UUID)
-- `work_id` (foreign key to `works`)
-- `type` (e.g., book or audiobook)
-- `format` (e.g., hardcover, Kindle, Audible)
-- `isbn` or `asin`
-- `narrator` (optional, for audiobooks)
-- `abridged` (boolean, optional)
-
-This separation allows Bookframe to:
-
-- Normalize multiple formats under a single work
-- Track metadata per edition
-- Support advanced filters and future integrations (e.g., fetch by ISBN)
+Each edition:
+- Is tied to a `work`
+- Can have a unique `isbn` (books) or `asin` (audiobooks)
+- May include format-specific fields like `narrator` or `abridged`
 
 ---
 
-## 🔌 Endpoints
+## 📌 API Overview
 
 ```http
-GET /                       # Health check
-POST /search               # Full-text search
-POST /works                # Create a new work
-GET /works/:id             # Fetch single work by ID
-PUT /works/:id             # Update a work
-DELETE /works/:id          # Delete a work
-POST /editions             # Create new edition (linked to a work)
-GET /editions/:id          # Fetch an edition by ID
-PUT /editions/:id          # Update edition metadata
+# ✅ Health
+GET    /                         → Check service status
+
+# ✅ Search
+POST   /search                   → Search works by title or author
+
+# ✅ Authors
+POST   /authors                  → Create or update an author
+GET    /authors/:id              → Get author details
+GET    /authors/:id/works        → All works by an author
+GET    /authors/:id/editions     → All editions across all author’s works
+
+# ✅ Works
+POST   /works                    → Create or update a work
+GET    /works/:id                → Get work metadata
+PUT    /works/:id                → Update work metadata
+DELETE /works/:id                → Delete a work
+GET    /works/:id/editions       → List editions for a work
+
+# ✅ Editions
+POST   /editions                 → Upsert an edition (by ISBN or ASIN)
+GET    /editions/:id             → Fetch single edition by ID
+
+# ✅ Relationships
+POST   /work-authors             → Link work ↔ author (many-to-many)
 ```
 
-### 🔍 GET /authors/:id/editions
-Returns all editions across all works associated with a specific author.
+---
 
-**Example response:**
+## 🔍 Example Response: `/authors/:id/editions`
 
 ```json
 [
   {
-    "edition_id": "c93550ff-213e-4000-b9c9-67005a0abe7f",
-    "work_title": "The Martian",
+    "id": "c93550ff-213e-4000-b9c9-67005a0abe7f",
+    "title": "The Martian",
     "type": "print",
     "format": "hardcover",
     "isbn": "9780804139201",
     "asin": null,
     "narrator": null,
-    "abridged": null
-  },
-  ...
+    "abridged": false,
+    "updated_at": "2025-04-06T04:12:19.123Z"
+  }
 ]
+```
 
 ---
 
@@ -102,26 +112,37 @@ wrangler dev
 wrangler deploy
 ```
 
-Make sure your `wrangler.toml` has the correct D1 database bindings.
+Ensure your `wrangler.toml` is correctly bound to your D1 database:
+
+```toml
+[[d1_databases]]
+binding = "BOOKFRAME_DB"
+database_name = "bookframe-db"
+database_id = "xxxx-xxxx-xxxx"
+```
 
 ---
 
-## 🧭 Roadmap
+## 🔭 Roadmap Preview
 
-See [`roadmap.md`](./roadmap.md) for full roadmap planning and milestones.
+See [`roadmap.md`](./roadmap.md) for detailed milestone tracking.
 
----
-
-## 📦 Future Plans
-
-- Author table and relationships
-- WASM-powered metadata scrapers
-- Metadata ingestion via ISBN/ASIN
-- Public frontend using Astro or Next.js
-- AI-generated book summaries
+- ✅ Normalize schema for authors/works/editions
+- ✅ Implement upsert logic for editions
+- ✅ Support full read/write lifecycle for all entities
+- 🔜 Metadata ingestion via Google Books and OpenLibrary
+- 🔜 Public frontend with Astro/Next.js
+- 🔜 AI-powered summaries, tagging, and themes
 
 ---
 
-## 🧠 Inspiration
+## 💬 Why BookFrame?
 
-Born out of frustration with existing book metadata APIs and the desire to build a complete, modern, open backend for book and audiobook discovery.
+Most book APIs are either closed, inconsistent, or limited. BookFrame was born out of a need for a **modern, reliable, and open system** that can:
+
+- Ingest books from anywhere
+- Normalize data for multi-format discovery
+- Stay updated automatically
+- Scale with the community
+
+Built by readers. For readers. Powered by Cloudflare.
