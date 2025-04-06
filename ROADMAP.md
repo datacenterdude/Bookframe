@@ -2,49 +2,86 @@
 
 _Last updated: 2025-04-06_
 
-## ✅ Completed
+## ✅ Completed Milestones
 
-- ✅ Deployed and configured Cloudflare D1 database
-- ✅ Connected D1 database via Cloudflare Worker using `BOOKFRAME_DB` binding
-- ✅ Implemented full REST API for `works` table:
-  - `GET /` — Health check
-  - `POST /search` — Full-text search
-  - `POST /works` — Create new work
-  - `PUT /works/:id` — Update work
-  - `GET /works/:id` — Fetch single work
-  - `GET /works/:id/editions` — List all editions for a work
-  - `DELETE /works/:id` — Delete work
-- ✅ Designed D1 schema for `editions` and their relationship to `works`
-- ✅ Implemented full REST API for `editions` table:
-  - `POST /editions` — Create edition (UUID-based)
-  - `GET /editions/:id` — Fetch single edition
-  - `PUT /editions/:id` — Update edition
-- ✅ Introduced UUIDs for all internal identifiers (`works`, `authors`, `editions`)
-- ✅ Reorganized GitHub repo into monorepo with `bookframe-worker`
-- ✅ Updated `wrangler.toml` with D1 database bindings
-- ✅ Resolved `BOOKFRAME_DB` runtime binding issues
-- ✅ Created and documented `authors` table:
-  - `GET /authors/:id` — Fetch single author
-  - `GET /authors/:id/works` — Get all works by author
-  - `GET /authors/:id/editions` — Get all editions across all works by author
-- ✅ README and `roadmap.md` documentation established and maintained
+### 🔧 Backend & Infrastructure
+- ✅ Cloudflare D1 database configured and bound via `BOOKFRAME_DB`
+- ✅ Deployed API via Cloudflare Workers (TypeScript + Wrangler)
+- ✅ Full monorepo structure established with `bookframe-worker` subdirectory
+- ✅ `wrangler.toml` updated with correct D1 bindings and deploy targets
+
+### 🗃️ Core Database Schema
+- ✅ `works` table created and operational
+- ✅ `editions` table created with foreign key linkage to `works`
+- ✅ `authors` table implemented
+- ✅ `work_authors` many-to-many relationship table added
+
+### 🌐 API Endpoints
+- ✅ `GET /` — Health check
+- ✅ `POST /search` — Title or author full-text search
+- ✅ Full CRUD support for:
+  - `works`
+    - `POST /works`
+    - `GET /works/:id`
+    - `PUT /works/:id`
+    - `DELETE /works/:id`
+    - `GET /works/:id/editions`
+  - `editions`
+    - `POST /editions` with upsert (ISBN/ASIN)
+    - `GET /editions/:id`
+    - `PUT /editions/:id` (optional)
+  - `authors`
+    - `POST /authors` with upsert support
+    - `GET /authors/:id`
+    - `GET /authors/:id/works`
+    - `GET /authors/:id/editions`
+  - `work-authors`
+    - `POST /work-authors` to link works and authors
+
+### 🧪 Core Features
+- ✅ UUIDs used for all internal records (`works`, `editions`, `authors`)
+- ✅ `updated_at` timestamps introduced for all upsert records
+- ✅ Intelligent upsert logic for editions based on ISBN/ASIN uniqueness
+- ✅ Normalized external metadata to ensure single source of truth
+- ✅ Swagger-style endpoint documentation embedded in code
+- ✅ Fully updated and documented `README.md` for developer onboarding
 
 ---
 
 ## 🚧 In Progress
 
-- 🧪 Evaluate enrichment strategies for metadata (ISBN/ASIN lookup)
-- 🛠️ Standardize error handling and validation logic across endpoints
-- 🔬 Normalize and validate external IDs using UUID-backed internal mappings
+### 🔬 Stability & Optimization
+- 🧪 Evaluate robust enrichment pipeline using Google Books API (fallback: OpenLibrary)
+- 🛠️ Implement consistent error handling and response schemas
+- 🔄 Normalize ingestion payloads across all endpoints
+- 🔐 Plan for tokenized access control (Cloudflare Access or JWT-based)
 
 ---
 
-## 🧪 Planned Features (v0.2+)
+## 🧪 Future Milestones
 
-- 🔍 Implement advanced search (title, author, edition filters)
-- 📈 Introduce analytics endpoints for usage tracking
-- 🔐 Add user authentication (support for public/private endpoints)
-- 📦 WASM module for enrichment, ID parsing, or conversion logic
-- 🌍 Build public frontend interface (React, Next.js, or Astro)
-- 🔄 Support bulk import of works/editions via CSV/JSON
-- 📜 Enable Markdown or AI-generated book summaries per work
+### 📚 Ingestion & Enrichment (v0.2+)
+- 🔁 Scheduled enrichment jobs for metadata refresh (ISBN/ASIN)
+- 🧠 AI-generated summaries, character maps, themes, tags per work
+- 📥 Bulk import via CSV or JSON upload
+- 🧩 Automated deduplication on ingestion with fuzzy matching logic
+
+### 💡 Developer & Frontend Expansion (v0.3+)
+- 🔍 Advanced filtering: type, format, abridged, narrator
+- 🌐 Build public-facing frontend (Astro, React, or Next.js)
+- 📈 Analytics for edition popularity, search trends, enrichment deltas
+- 🎯 API pagination and sorting options (limit, offset, order_by)
+
+### 🛠️ Platform Engineering & Ecosystem (v0.4+)
+- 🔐 User accounts, saved libraries, private collections
+- ⚙️ WASM-powered ISBN/ASIN validation or conversion helpers
+- 🔎 Smart search with AI-assisted intent recognition
+- 📚 Community-driven metadata submission (moderated)
+
+---
+
+## 🧭 Long-Term Vision
+
+Bookframe is designed to become the **canonical, open, and up-to-date source of truth** for all things books — across print, digital, and audio. The goal is not only to unify metadata across formats, but to create a developer-first and automation-friendly ecosystem that supports discovery, archival, and enrichment at global scale.
+
+---
