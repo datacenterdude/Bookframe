@@ -1,110 +1,222 @@
-openapi: 3.1.0
+openapi: 3.0.0
 info:
   title: BookFrame API
-  version: 0.2.0
-  description: |
-    BookFrame is a metadata engine for books and audiobooks. This API allows you to search, discover, ingest, and manage metadata for works, editions, and authors.
-
+  description: API for managing metadata of books, audiobooks, and their editions.
+  version: 0.2
+  contact:
+    name: Support Team
+    url: https://forums.orbitaljigsaw.com
+    email: support@orbitaljigsaw.com
 servers:
-  - url: https://<your-bookframe-api>.workers.dev
+  - url: https://{your-bookframe-api}.workers.dev
+    description: Cloudflare Worker API
 
 paths:
-  /:
-    get:
-      summary: Health check
-      responses:
-        '200':
-          description: OK
-
   /search:
     get:
-      summary: Search for works by title
+      summary: "Search for works by title"
+      description: "Search for books or audiobooks in the database. If no results are found, it falls back to Google Books API."
       parameters:
         - name: q
           in: query
+          description: "Search query term (min 2 characters)"
           required: true
           schema:
             type: string
         - name: limit
           in: query
+          description: "Max results to return"
+          required: false
           schema:
             type: integer
+            default: 10
       responses:
         '200':
-          description: A list of works
+          description: "Successful search response"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: "Work ID"
+                        title:
+                          type: string
+                          description: "Title of the work"
+                        author:
+                          type: string
+                          description: "Author's name"
+                        cover_url:
+                          type: string
+                          description: "URL for the work's cover image"
+        '400':
+          description: "Bad Request - Invalid query"
+        '500':
+          description: "Internal Server Error"
 
   /discover/editions:
     get:
-      summary: Discover editions with filters
+      summary: "Discover editions with filtering and pagination"
+      description: "Filter and paginate through the editions catalog."
       parameters:
         - name: type
           in: query
+          description: "Filter by edition type (e.g., print, audiobook)"
+          required: false
           schema:
             type: string
         - name: format
           in: query
+          description: "Filter by edition format (e.g., mp3, hardcover)"
+          required: false
           schema:
             type: string
         - name: language
           in: query
-          schema:
-            type: string
-        - name: publisher
-          in: query
-          schema:
-            type: string
-        - name: series_name
-          in: query
-          schema:
-            type: string
-        - name: explicit
-          in: query
-          schema:
-            type: boolean
-        - name: abridged
-          in: query
-          schema:
-            type: boolean
-        - name: genres
-          in: query
-          schema:
-            type: string
-        - name: tags
-          in: query
-          schema:
-            type: string
-        - name: sort
-          in: query
-          schema:
-            type: string
-        - name: order
-          in: query
+          description: "Filter by language (ISO 639-1 code)"
+          required: false
           schema:
             type: string
         - name: limit
           in: query
+          description: "Max number of results to return"
+          required: false
           schema:
             type: integer
+            default: 25
         - name: offset
           in: query
+          description: "Offset for pagination"
+          required: false
           schema:
             type: integer
+            default: 0
       responses:
         '200':
-          description: A list of editions
+          description: "Successful response with filtered and paginated editions"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                    description: "Total number of editions"
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: "Edition ID"
+                        work_id:
+                          type: string
+                          description: "ID of the associated work"
+                        type:
+                          type: string
+                          description: "Edition type"
+                        format:
+                          type: string
+                          description: "Edition format"
+                        release_date:
+                          type: string
+                          format: date
+                          description: "Edition release date"
+        '400':
+          description: "Bad Request - Invalid filter parameters"
+        '500':
+          description: "Internal Server Error"
 
-components:
-  schemas:
-    Work:
-      type: object
-      properties:
-        id:
-          type: string
-        title:
-          type: string
-        author:
-          type: string
-        description:
-          type: string
-        cover_url:
-          type: string
+  /authors:
+    get:
+      summary: "Get author by name"
+      description: "Lookup an author by their exact name."
+      parameters:
+        - name: name
+          in: query
+          description: "Author's name"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: "Successful response with author details"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: "Author ID"
+                  name:
+                    type: string
+                    description: "Author's name"
+        '404':
+          description: "Author not found"
+        '500':
+          description: "Internal Server Error"
+    post:
+      summary: "Create or update an author"
+      description: "Create a new author or update an existing one."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: "Author ID (UUID)"
+                name:
+                  type: string
+                  description: "Author's name"
+      responses:
+        '200':
+          description: "Successfully created or updated author"
+        '400':
+          description: "Bad request - Missing required fields"
+        '500':
+          description: "Internal Server Error"
+      
+  /works:
+    post:
+      summary: "Create or update a work"
+      description: "Create a new work or update an existing work (e.g., book, audiobook)."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: "Work ID (UUID)"
+                title:
+                  type: string
+                  description: "Title of the work"
+                author:
+                  type: string
+                  description: "Name of the author"
+                description:
+                  type: string
+                  description: "Description of the work"
+                cover_url:
+                  type: string
+                  description: "URL to the cover image"
+      responses:
+        '200':
+          description: "Successfully created or updated work"
+        '400':
+          description: "Bad request - Missing required fields"
+        '500':
+          description: "Internal Server Error"
