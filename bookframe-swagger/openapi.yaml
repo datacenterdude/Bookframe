@@ -1,0 +1,110 @@
+openapi: 3.1.0
+info:
+  title: BookFrame API
+  version: 0.2.0
+  description: |
+    BookFrame is a metadata engine for books and audiobooks. This API allows you to search, discover, ingest, and manage metadata for works, editions, and authors.
+
+servers:
+  - url: https://<your-bookframe-api>.workers.dev
+
+paths:
+  /:
+    get:
+      summary: Health check
+      responses:
+        '200':
+          description: OK
+
+  /search:
+    get:
+      summary: Search for works by title
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of works
+
+  /discover/editions:
+    get:
+      summary: Discover editions with filters
+      parameters:
+        - name: type
+          in: query
+          schema:
+            type: string
+        - name: format
+          in: query
+          schema:
+            type: string
+        - name: language
+          in: query
+          schema:
+            type: string
+        - name: publisher
+          in: query
+          schema:
+            type: string
+        - name: series_name
+          in: query
+          schema:
+            type: string
+        - name: explicit
+          in: query
+          schema:
+            type: boolean
+        - name: abridged
+          in: query
+          schema:
+            type: boolean
+        - name: genres
+          in: query
+          schema:
+            type: string
+        - name: tags
+          in: query
+          schema:
+            type: string
+        - name: sort
+          in: query
+          schema:
+            type: string
+        - name: order
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of editions
+
+components:
+  schemas:
+    Work:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        author:
+          type: string
+        description:
+          type: string
+        cover_url:
+          type: string
