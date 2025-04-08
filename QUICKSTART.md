@@ -6,11 +6,7 @@ Welcome to the BookFrame API! This guide helps developers quickly interact with 
 
 ## 🌐 Base URL
 
-All endpoints are served via your deployed Cloudflare Worker.
-
-```
-https://<your-bookframe-api>.workers.dev
-```
+https://api.bookframe.org
 
 ---
 
