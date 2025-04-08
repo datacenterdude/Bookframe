@@ -1,0 +1,442 @@
+openapi: 3.0.0
+info:
+  title: BookFrame API
+  description: API for managing books and audiobooks metadata.
+  version: 0.2.0
+  contact:
+    name: BookFrame Team
+    url: https://bookframe.org
+    email: support@bookframe.org
+servers:
+  - url: https://bookframe-api.workers.dev
+    description: Cloudflare Worker-based API server
+
+paths:
+  /search:
+    get:
+      summary: Search for works by title
+      parameters:
+        - in: query
+          name: q
+          required: true
+          schema:
+            type: string
+          description: The search query term (min 2 characters)
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 10
+          description: Limit the number of results returned
+      responses:
+        '200':
+          description: A list of works matching the search query
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    title:
+                      type: string
+                    author:
+                      type: string
+                    description:
+                      type: string
+                    cover_url:
+                      type: string
+        '400':
+          description: Bad request (invalid query)
+        '404':
+          description: No results found
+
+  /discover/editions:
+    get:
+      summary: Discover editions with filtering and pagination
+      parameters:
+        - in: query
+          name: type
+          schema:
+            type: string
+          description: Filter by edition type (e.g., print, audiobook)
+        - in: query
+          name: format
+          schema:
+            type: string
+          description: Filter by edition format (e.g., hardcover, mp3)
+        - in: query
+          name: language
+          schema:
+            type: string
+          description: Filter by language code (e.g., en for English)
+        - in: query
+          name: publisher
+          schema:
+            type: string
+          description: Filter by publisher
+        - in: query
+          name: series_name
+          schema:
+            type: string
+          description: Filter by series name
+        - in: query
+          name: explicit
+          schema:
+            type: boolean
+          description: Filter by explicit content
+        - in: query
+          name: abridged
+          schema:
+            type: boolean
+          description: Filter by abridged editions
+        - in: query
+          name: genres
+          schema:
+            type: string
+          description: Filter by genres
+        - in: query
+          name: tags
+          schema:
+            type: string
+          description: Filter by tags
+        - in: query
+          name: sort
+          schema:
+            type: string
+            default: release_date
+            enum:
+              - release_date
+              - runtime
+              - page_count
+          description: Sort by one of the fields
+        - in: query
+          name: order
+          schema:
+            type: string
+            default: desc
+            enum:
+              - asc
+              - desc
+          description: Sorting order
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 25
+          description: Limit the number of results returned
+        - in: query
+          name: offset
+          schema:
+            type: integer
+            default: 0
+          description: Pagination offset
+      responses:
+        '200':
+          description: A list of editions based on filters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                  limit:
+                    type: integer
+                  offset:
+                    type: integer
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        type:
+                          type: string
+                        format:
+                          type: string
+                        language:
+                          type: string
+                        publisher:
+                          type: string
+                        release_date:
+                          type: string
+                        page_count:
+                          type: integer
+        '400':
+          description: Invalid request parameters
+        '404':
+          description: No editions found
+
+  /authors:
+    get:
+      summary: Lookup author by exact name
+      parameters:
+        - in: query
+          name: name
+          required: true
+          schema:
+            type: string
+          description: The exact name of the author
+      responses:
+        '200':
+          description: Author found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+        '404':
+          description: Author not found
+
+    post:
+      summary: Create or update an author
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                name:
+                  type: string
+      responses:
+        '201':
+          description: Author successfully created
+        '400':
+          description: Invalid input
+
+  /works:
+    get:
+      summary: Get a paginated list of works
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 20
+          description: Max results per page
+        - in: query
+          name: offset
+          schema:
+            type: integer
+            default: 0
+          description: Offset for pagination
+      responses:
+        '200':
+          description: List of works
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    title:
+                      type: string
+                    author:
+                      type: string
+                    description:
+                      type: string
+                    cover_url:
+                      type: string
+        '400':
+          description: Invalid parameters
+
+    post:
+      summary: Create or update a work
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                title:
+                  type: string
+                author:
+                  type: string
+                description:
+                  type: string
+                cover_url:
+                  type: string
+      responses:
+        '201':
+          description: Work successfully created
+        '400':
+          description: Invalid input
+
+  /editions:
+    post:
+      summary: Create or update an edition (deduplicates by ISBN/ASIN)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                work_id:
+                  type: string
+                type:
+                  type: string
+                format:
+                  type: string
+                isbn:
+                  type: string
+                asin:
+                  type: string
+                narrator:
+                  type: string
+                abridged:
+                  type: boolean
+                page_count:
+                  type: integer
+                runtime:
+                  type: string
+                release_date:
+                  type: string
+                language:
+                  type: string
+                publisher:
+                  type: string
+                series_name:
+                  type: string
+                series_position:
+                  type: integer
+                explicit:
+                  type: boolean
+                genres:
+                  type: string
+                tags:
+                  type: string
+      responses:
+        '201':
+          description: Edition created/updated
+        '400':
+          description: Invalid input
+
+    get:
+      summary: Get all editions (paginated)
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 25
+        - in: query
+          name: offset
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: A list of editions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                  limit:
+                    type: integer
+                  offset:
+                    type: integer
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        type:
+                          type: string
+                        format:
+                          type: string
+                        isbn:
+                          type: string
+                        release_date:
+                          type: string
+                        publisher:
+                          type: string
+                        series_name:
+                          type: string
+        '400':
+          description: Invalid query parameters
+
+  /work-authors:
+    post:
+      summary: Link work to author
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                work_id:
+                  type: string
+                author_id:
+                  type: string
+      responses:
+        '201':
+          description: Successfully linked
+        '400':
+          description: Invalid input
+
+  /external_ingests:
+    get:
+      summary: View external ingest logs (from Google Books)
+      responses:
+        '200':
+          description: A list of external ingest logs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    query:
+                      type: string
+                    source:
+                      type: string
+                    status:
+                      type: string
+                    created_at:
+                      type: string
+        '400':
+          description: Invalid query parameters
+
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+    SuccessResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        id:
+          type: string
