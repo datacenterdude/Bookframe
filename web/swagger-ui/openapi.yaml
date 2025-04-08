@@ -2,13 +2,13 @@ openapi: 3.0.0
 info:
   title: BookFrame API
   description: API for managing books and audiobooks metadata.
-  version: 0.2.0
+  version: 0.3.0
   contact:
     name: BookFrame Team
     url: https://bookframe.org
-    email: support@bookframe.org
+#    email: support@bookframe.org
 servers:
-  - url: https://bookframe-api.workers.dev
+  - url: https://api.bookframe.org
     description: Cloudflare Worker-based API server
 
 paths:
