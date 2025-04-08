@@ -219,7 +219,7 @@ Returns `✅ BookFrame API is live` if the service is running.
 
 ## 💬 Need Help?
 
-Open an issue in the GitHub repo or reach out via [Orbital Jigsaw](https://forums.orbitaljigsaw.com) for support, collaboration, or to contribute improvements.
+Open an issue in the GitHub repo for support, collaboration, or to contribute improvements.
 
 ---
 
