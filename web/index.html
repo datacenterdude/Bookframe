@@ -1,39 +1,30 @@
-const html = `<!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <title>BookFrame Search</title>
-  <style>
-    /* Add your CSS styles here */
-    .search-container {
-      text-align: center;
-    }
-    .search-input {
-      padding: 10px;
-      width: 300px;
-      font-size: 18px;
-    }
-    .search-button {
-      padding: 10px;
-      font-size: 18px;
-      cursor: pointer;
-    }
-    .results {
-      margin-top: 20px;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Swagger UI</title>
+  <!-- Add base href to make sure relative paths are resolved correctly -->
+  <base href="/">
+  <link rel="stylesheet" type="text/css" href="swagger-ui.css" />
+  <link rel="icon" type="image/png" href="favicon.ico" />
 </head>
 <body>
-  <div class="search-container">
-    <h1>BookFrame Search</h1>
-    <form method="GET" action="/search">
-      <input class="search-input" type="text" name="q" placeholder="Search for books or audiobooks"/>
-      <button class="search-button" type="submit">Search</button>
-    </form>
-    <div class="results" id="results"></div>
-  </div>
+  <div id="swagger-ui"></div>
+  <!-- Load JS scripts with async attribute to improve page load performance -->
+  <script async src="swagger-ui-bundle.js"></script>
+  <script async src="swagger-ui-standalone-preset.js"></script>
+  <script>
+    const ui = SwaggerUIBundle({
+      url: "openapi.yaml",  // Path to your OpenAPI spec (ensure it's correctly resolved)
+      dom_id: '#swagger-ui',
+      deepLinking: true,
+      presets: [
+        SwaggerUIBundle.presets.apis,
+        SwaggerUIStandalonePreset
+      ],
+      layout: "StandaloneLayout"
+    });
+  </script>
 </body>
-</html>`;
-
-return new Response(html, {
-  headers: { "Content-Type": "text/html" },
-});
+</html>
