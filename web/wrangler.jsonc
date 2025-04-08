@@ -7,9 +7,6 @@
 		"account_id": "25f82b0de830a9bfd4a08e4db0878ef5",
 		"workers_dev": false
 	  }
-	},
-	"static": {
-	  "directory": "./swagger-ui"  // Specify the folder where Swagger UI files are located
 	}
   }
   
