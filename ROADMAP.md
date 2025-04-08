@@ -1,6 +1,6 @@
 # BookFrame Project Roadmap
 
-_Last updated: 2025-04-06_
+_Last updated: 2025-04-08_
 
 ---
 
@@ -9,18 +9,24 @@ _Last updated: 2025-04-06_
 ### Backend & Infrastructure
 - [x] Cloudflare D1 database configured and bound via `BOOKFRAME_DB`
 - [x] Deployed API via Cloudflare Workers (TypeScript + Wrangler)
-- [x] Full monorepo structure established with `bookframe-worker` subdirectory
-- [x] `wrangler.toml` updated with correct D1 bindings and deploy targets
+- [x] Full monorepo structure established with `bookframe-worker` and `bookframe-frontend` subdirectories
+- [x] `wrangler.jsonc` files updated for deployment targets and API worker configuration
+- [x] Frontend worker deployed on `bookframe-web`
+- [x] Custom domain setup for API (`api.bookframe.org`)
+- [x] Swagger UI integrated for API documentation at `api.bookframe.org`
+- [x] Health check and basic search functionality operational
 
 ### Core Database Schema
 - [x] `works` table created and operational
 - [x] `editions` table created with foreign key linkage to `works`
 - [x] `authors` table implemented
 - [x] `work_authors` many-to-many relationship table added
+- [x] UUID-based primary keys across all tables
+- [x] Fully normalized schema for authors, works, and editions
 
 ### API Endpoints
 - [x] `GET /` — Health check
-- [x] `POST /search` — Title or author full-text search
+- [x] `POST /search` — Title or author full-text search with Google Books fallback
 - [x] Full CRUD support for:
   - `works`
     - `POST /works`
@@ -47,6 +53,7 @@ _Last updated: 2025-04-06_
 - [x] Normalized external metadata to ensure single source of truth
 - [x] Swagger-style endpoint documentation embedded in code
 - [x] Fully updated and documented `README.md` for developer onboarding
+- [x] Deployed static frontend search engine with HTML form and basic search results
 
 ---
 
@@ -85,3 +92,13 @@ _Last updated: 2025-04-06_
 ## 🧭 Long-Term Vision
 
 BookFrame aims to become the **canonical, open, and continuously enriched source of truth** for all things books — across print, digital, and audio. Our goal is to unify metadata, empower community contributions, and enable discovery and automation at global scale.
+
+---
+
+## 🧑‍💻 Contributing
+
+Contributions to BookFrame are welcome! Please fork the repository, make your changes, and submit a pull request.
+
+---
+
+**Note:** Check out the [API Documentation](https://api.bookframe.org) for the latest API updates.
