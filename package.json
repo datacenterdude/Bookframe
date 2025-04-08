@@ -1,7 +1,11 @@
 {
   "type": "module",
+  "version": "0.3.0",
   "dependencies": {
     "node-fetch": "^3.3.2",
     "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250407.0"
   }
 }

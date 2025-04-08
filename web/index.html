@@ -1,0 +1,39 @@
+const html = `<!DOCTYPE html>
+<html>
+<head>
+  <title>BookFrame Search</title>
+  <style>
+    /* Add your CSS styles here */
+    .search-container {
+      text-align: center;
+    }
+    .search-input {
+      padding: 10px;
+      width: 300px;
+      font-size: 18px;
+    }
+    .search-button {
+      padding: 10px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .results {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="search-container">
+    <h1>BookFrame Search</h1>
+    <form method="GET" action="/search">
+      <input class="search-input" type="text" name="q" placeholder="Search for books or audiobooks"/>
+      <button class="search-button" type="submit">Search</button>
+    </form>
+    <div class="results" id="results"></div>
+  </div>
+</body>
+</html>`;
+
+return new Response(html, {
+  headers: { "Content-Type": "text/html" },
+});

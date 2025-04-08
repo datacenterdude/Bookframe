@@ -12,5 +12,8 @@
     "noEmit": true,
     "isolatedModules": true
   },
-  "include": ["src"]
+  "include": [
+    "api/src/**/*.ts",  // Include TypeScript files in the 'api' folder
+    "web/src/**/*.ts"   // Include TypeScript files in the 'web' folder
+  ]
 }

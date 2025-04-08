@@ -848,8 +848,9 @@ export default {
           offset = '0'
         } = params;
 
-        const where = [];
+        const where: string[] = [];
         const binds: any[] = [];
+
 
         if (type) where.push(`type = ?`), binds.push(type);
         if (format) where.push(`format = ?`), binds.push(format);

@@ -1,0 +1,12 @@
+{
+	"name": "web",
+	"main": "src/index.ts",
+	"compatibility_date": "2025-04-07",
+	"env": {
+	  "production": {
+		"account_id": "25f82b0de830a9bfd4a08e4db0878ef5",
+		"workers_dev": false
+	  }
+	}
+  }
+  
