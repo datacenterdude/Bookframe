@@ -1,6 +1,6 @@
 {
     "name": "api",
-    "main": "src/index.ts",
+    "main": "v1/index.ts",
     "compatibility_date": "2025-04-05",
     "d1_databases": [
       {

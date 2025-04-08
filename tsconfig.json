@@ -13,7 +13,7 @@
     "isolatedModules": true
   },
   "include": [
-    "api/src/**/*.ts",  // Include TypeScript files in the 'api' folder
+    "api/v1/**/*.ts",  // Include TypeScript files in the 'api' folder
     "web/src/**/*.ts"   // Include TypeScript files in the 'web' folder
   ]
 }
