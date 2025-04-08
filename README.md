@@ -1,3 +1,4 @@
+
 # 📘 BookFrame
 
 **BookFrame** is a modern, API-first backend for organizing and exploring books, audiobooks, and their many editions. Designed for flexibility, speed, and developer ergonomics, it uses **Cloudflare Workers** and **D1** to deliver a blazing-fast metadata layer — ideal for personal libraries, publishers, or community-powered catalogs.
@@ -99,29 +100,6 @@ POST   /work-authors             → Link work ↔ author (many-to-many)
   }
 ]
 ```
-
----
-
-## 🛠️ Local Development
-
-```bash
-# Start local dev server
-wrangler dev
-
-# Deploy to Cloudflare
-wrangler deploy
-```
-
-Ensure your `wrangler.toml` is correctly bound to your D1 database:
-
-```toml
-[[d1_databases]]
-binding = "BOOKFRAME_DB"
-database_name = "bookframe-db"
-database_id = "xxxx-xxxx-xxxx"
-```
-
----
 
 ## 🔭 Roadmap Preview
 
