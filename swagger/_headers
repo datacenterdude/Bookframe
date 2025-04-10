@@ -1,0 +1,8 @@
+/swagger/*
+  Content-Type: application/javascript
+/swagger/*.css
+  Content-Type: text/css
+/swagger/*.html
+  Content-Type: text/html
+/swagger/*.yaml
+  Content-Type: application/yaml
