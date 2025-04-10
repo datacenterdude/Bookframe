@@ -888,57 +888,10 @@ export default {
       async function handleRequest(request: Request): Promise<Response> {
         const url = new URL(request.url);
       
-        // Serve Swagger UI
-        if (url.pathname === "/") {
-          const html = await fetchSwaggerFile("index.html");
-          return new Response(html.body, {
-            headers: { "Content-Type": "text/html" },
-          });
-        }
-      
-        // Serve Swagger JS, CSS, and other static files
-        if (url.pathname.startsWith("/swagger")) {
-          const staticFile = await fetchSwaggerFile(url.pathname.substring(1));
-          return new Response(staticFile.body, {
-            headers: { "Content-Type": getMimeType(url.pathname) },
-          });
-        }
-      
-        // Serve OpenAPI YAML
-        if (url.pathname === "/openapi.yaml") {
-          const openapiFile = await fetchSwaggerFile("openapi.yaml");
-          return new Response(openapiFile.body, {
-            headers: { "Content-Type": "application/yaml" },
-          });
-        }
-      
-        // Return 404 for unrecognized paths
-        return new Response("Not Found", { status: 404 });
+      // Return 404 for unrecognized paths
+      return new Response("Not Found", { status: 404 });
       }
       
-      // Helper function to fetch static files from the worker's assets
-      async function fetchSwaggerFile(fileName: string) {
-        const file = await fetch(`./${fileName}`);
-        if (!file.ok) {
-          return new Response("File not found", { status: 404 });
-        }
-        return file;
-      }
-      
-      // Helper function to determine mime type for assets
-      function getMimeType(path: string): string {
-        if (path.endsWith(".js")) {
-          return "application/javascript";
-        }
-        if (path.endsWith(".css")) {
-          return "text/css";
-        }
-        if (path.endsWith(".yaml") || path.endsWith(".yml")) {
-          return "application/yaml";
-        }
-        return "text/plain";
-      } 
-
       // ---------------------------------
       // ❌ Fallback Route
       // ---------------------------------
