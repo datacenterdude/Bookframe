@@ -9,26 +9,8 @@
       "database_id": "f326edf9-bf84-4e0d-a37b-07eae13eb85c"
     }
   ],
-  "assets": [
-    {
-      "binding": "SWAGGER_ASSETS",
-      "path": "./swagger",
-      "pattern": "*.js"
-    },
-    {
-      "binding": "SWAGGER_ASSETS",
-      "path": "./swagger",
-      "pattern": "*.css"
-    },
-    {
-      "binding": "SWAGGER_ASSETS",
-      "path": "./swagger",
-      "pattern": "*.html"
-    },
-    {
-      "binding": "SWAGGER_ASSETS",
-      "path": "./swagger",
-      "pattern": "*.yaml"
+  "observability": {
+      "enabled": true,
+      "head_sampling_rate": 0.1
     }
-  ]
-}
+  }

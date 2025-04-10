@@ -5,18 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Swagger UI</title>
   <!-- Add base href to make sure relative paths are resolved correctly -->
-  <base href="/">
-  <link rel="stylesheet" type="text/css" href="/swagger/swagger-ui.css" />
-  <link rel="icon" type="image/png" href="favicon.ico" />
+  <base href="/swagger/">
+  <link rel="stylesheet" type="text/css" href="./swagger-ui.css" />
+  <link rel="icon" type="image/png" href="./favicon.ico" />
 </head>
 <body>
   <div id="swagger-ui"></div>
   <!-- Load JS scripts with async attribute to improve page load performance -->
-  <script async src="/swagger/swagger-ui-bundle.js"></script>
-  <script async src="/swagger/swagger-ui-standalone-preset.js"></script>
+  <script defer src="./swagger-ui-bundle.js"></script>
+  <script defer src="./swagger-ui-standalone-preset.js"></script>
   <script>
     const ui = SwaggerUIBundle({
-      url: "openapi.yaml",
+      url: "/openapi.yaml",
       dom_id: '#swagger-ui',
       deepLinking: true,
       presets: [
