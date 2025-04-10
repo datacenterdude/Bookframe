@@ -1,13 +1,34 @@
 {
-    "name": "api",
-    "main": "v1/index.ts",
-    "compatibility_date": "2025-04-05",
-    "d1_databases": [
-      {
-        "binding": "BOOKFRAME_DB",
-        "database_name": "bookframe-db",
-        "database_id": "f326edf9-bf84-4e0d-a37b-07eae13eb85c"
-      }
-    ]
-  }
-  
+  "name": "api",
+  "main": "v1/index.ts",
+  "compatibility_date": "2025-04-05",
+  "d1_databases": [
+    {
+      "binding": "BOOKFRAME_DB",
+      "database_name": "bookframe-db",
+      "database_id": "f326edf9-bf84-4e0d-a37b-07eae13eb85c"
+    }
+  ],
+  "assets": [
+    {
+      "binding": "SWAGGER_ASSETS",
+      "path": "./swagger",
+      "pattern": "*.js"
+    },
+    {
+      "binding": "SWAGGER_ASSETS",
+      "path": "./swagger",
+      "pattern": "*.css"
+    },
+    {
+      "binding": "SWAGGER_ASSETS",
+      "path": "./swagger",
+      "pattern": "*.html"
+    },
+    {
+      "binding": "SWAGGER_ASSETS",
+      "path": "./swagger",
+      "pattern": "*.yaml"
+    }
+  ]
+}
